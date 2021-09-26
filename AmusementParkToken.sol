@@ -33,7 +33,7 @@ contract AmusementParkToken {
         uint returnValue = msg.value-cost;
         msg.sender.transfer(returnValue);
         uint balance = balanceOf();
-        require(_tokenQty<=balance, "El número de tokens solicitados supera el número de tokens en venta.");
+        require(_tokenQty<=balance, "The number of tokens requested exceeds the number of tokens for sale.");
         token.transfer(msg.sender, _tokenQty);
         Customers[msg.sender].buyedTokens = _tokenQty;
     }
