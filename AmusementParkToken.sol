@@ -19,7 +19,7 @@ contract AmusementParkToken {
         string[] usedRides;
     }
 
-    mapping(address=>customer) public Customers;
+    mapping(address=>customer) public customers;
 
     // Token management
 
@@ -35,11 +35,41 @@ contract AmusementParkToken {
         uint balance = balanceOf();
         require(_tokenQty<=balance, "The number of tokens requested exceeds the number of tokens for sale.");
         token.transfer(msg.sender, _tokenQty);
-        Customers[msg.sender].buyedTokens = _tokenQty;
+        customers[msg.sender].buyedTokens = _tokenQty;
     }
 
     function balanceOf() public view returns(uint) {
         return token.balanceOf(address(this));
     }
 
+    function myTokens() public view returns(uint) {
+        return token.balanceOf(msg.sender);
+    }
+
+    function generateTokens(uint _tokenQty) public Park(msg.sender) {
+        token.increaseTotalSupply(_tokenQty);
+    }
+
+    modifier Park(address _address) {
+        require(_address==owner, "You don't have the permissions to execute this function");
+        _;
+    }
+
+    // Park management
+    event rideWasUsed(string);
+    event rideWasAdded(string);
+    event rideWarRemoved(string);
+
+    struct ride {
+        string name;
+        uint price;
+        bool status;
+    }
+
+    mapping(string=>ride) public rides;
+    
+    string[] ridesNames;
+
+    mapping(address=>string[]) ridesHistory;
+    
 }
