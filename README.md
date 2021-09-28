@@ -20,6 +20,11 @@ Very simple implementation of a Smart Contract for token payment system for an a
 - [Remix](https://remix.ethereum.org/) - Remix IDE is an open source web and desktop application. Remix is used for the entire journey of contract development as well as being a playground for learning and teaching Ethereum.
 
 
+## Test deploy
+
+Deployed and verified at Rinkeby Testnet Network: [https://rinkeby.etherscan.io/address/0xB6D4bBbbF7EC4da05aFB19c80aFA86fc64F8eC79](https://rinkeby.etherscan.io/address/0xB6D4bBbbF7EC4da05aFB19c80aFA86fc64F8eC79)
+
+
 ## License
 
 MIT
