@@ -9,6 +9,8 @@ Very simple implementation of a Smart Contract for token payment system for an a
 - Buy tokens
 - Get my token quantity
 - Generate new tokens
+- Add new ride
+- Remove ride
 
 ## Tech
 

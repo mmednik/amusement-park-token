@@ -57,8 +57,8 @@ contract AmusementParkToken {
 
     // Park management
     event rideWasUsed(string);
-    event rideWasAdded(string);
-    event rideWarRemoved(string);
+    event rideWasAdded(string, uint);
+    event rideWasRemoved(string);
 
     struct ride {
         string name;
@@ -71,5 +71,16 @@ contract AmusementParkToken {
     string[] ridesNames;
 
     mapping(address=>string[]) ridesHistory;
+
+    function newRide(string memory _name, uint _price) public Park(msg.sender) {
+        rides[_name] = ride(_name, _price, true);
+        ridesNames.push(_name);
+        emit rideWasAdded(_name, _price);
+    }
+
+    function removeRide(string memory _name) public Park(msg.sender) {
+        rides[_name].status = false;
+        emit rideWasRemoved(_name);
+    }
     
 }
