@@ -25,9 +25,9 @@ interface ERC20Interface {
 
 contract ERC20 is ERC20Interface {
     
-    string public constant name = "mmednikCoin";
-    string public constant symbol = "MDK";
-    uint8 public constant decimals = 8;
+    string public constant name = "parkCoin";
+    string public constant symbol = "PRK";
+    uint8 public constant decimals = 2;
     
     mapping(address => uint) balances;
     mapping(address => mapping(address => uint)) allowed;
