@@ -11,7 +11,7 @@ contract AmusementParkToken {
 
     constructor() {
         token = new ERC20(10000);
-        owner = msg.sender;
+        owner = payable(msg.sender);
     }
 
     struct customer {
@@ -32,7 +32,7 @@ contract AmusementParkToken {
         uint cost = tokenPrice(_tokenQty);
         require(msg.value>=cost, "You do not have the amount of ethers necessary for the purchase.");
         uint returnValue = msg.value-cost;
-        msg.sender.transfer(returnValue);
+        payable(msg.sender).transfer(returnValue);
         uint balance = balanceOf();
         require(_tokenQty<=balance, "The number of tokens requested exceeds the number of tokens for sale.");
         token.transfer(msg.sender, _tokenQty);
@@ -96,7 +96,7 @@ contract AmusementParkToken {
         require(ridePrice <= myTokens(), "Insufficient tokens.");
         token.transferToPark(msg.sender, address(this), ridePrice);
         ridesHistory[msg.sender].push(_name);
-        rideWasUsed(_name, ridePrice, msg.sender);
+        emit rideWasUsed(_name, ridePrice, msg.sender);
     }
 
     function customerRides() public view returns(string[] memory) {
@@ -141,7 +141,7 @@ contract AmusementParkToken {
         require(foodPrice <= myTokens(), "Insufficient tokens.");
         token.transferToPark(msg.sender, address(this), foodPrice);
         foodsHistory[msg.sender].push(_name);
-        foodWasBought(_name, foodPrice, msg.sender);
+        emit foodWasBought(_name, foodPrice, msg.sender);
     }
 
     function customerFoods() public view returns(string[] memory) {
@@ -154,7 +154,7 @@ contract AmusementParkToken {
         require(_tokenQty > 0, "The number of tokens must be greater than 0.");
         require(_tokenQty <= myTokens(), "Insufficient tokens.");
         token.transferToPark(msg.sender, address(this), _tokenQty);
-        msg.sender.transfer(tokenPrice(_tokenQty));
+        payable(msg.sender).transfer(tokenPrice(_tokenQty));
     }
 
 }
