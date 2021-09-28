@@ -82,5 +82,9 @@ contract AmusementParkToken {
         rides[_name].status = false;
         emit rideWasRemoved(_name);
     }
+
+    function getRides() public view returns(string[] memory) {
+        return ridesNames;
+    }
     
 }
