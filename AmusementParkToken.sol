@@ -96,4 +96,8 @@ contract AmusementParkToken {
         rideWasUsed(_name, ridePrice, msg.sender);
     }
 
+    function customerRides() public view returns(string[] memory) {
+        return ridesHistory[msg.sender];
+    }
+
 }
