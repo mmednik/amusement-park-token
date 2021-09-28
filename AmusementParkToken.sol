@@ -17,6 +17,7 @@ contract AmusementParkToken {
     struct customer {
         uint buyedTokens;
         string[] usedRides;
+        string[] boughtFood;
     }
 
     mapping(address=>customer) public customers;
@@ -56,6 +57,8 @@ contract AmusementParkToken {
     }
 
     // Park management
+
+    // Rides
     event rideWasUsed(string, uint, address);
     event rideWasAdded(string, uint);
     event rideWasRemoved(string);
@@ -67,7 +70,7 @@ contract AmusementParkToken {
     }
 
     mapping(string=>ride) public rides;
-    
+
     string[] ridesNames;
 
     mapping(address=>string[]) ridesHistory;
@@ -99,6 +102,53 @@ contract AmusementParkToken {
     function customerRides() public view returns(string[] memory) {
         return ridesHistory[msg.sender];
     }
+
+    // Foods
+    event foodWasBought(string, uint, address);
+    event foodWasAdded(string, uint);
+    event foodWasRemoved(string);
+
+    struct food {
+        string name;
+        uint price;
+        bool status;
+    }
+
+    mapping(string=>food) public foods;
+
+    string[] foodsNames;
+
+    mapping(address=>string[]) foodsHistory;
+    
+    function newFood(string memory _name, uint _price) public Park(msg.sender) {
+        foods[_name] = food(_name, _price, true);
+        foodsNames.push(_name);
+        emit foodWasAdded(_name, _price);
+    }
+
+    function removeFood(string memory _name) public Park(msg.sender) {
+        foods[_name].status = false;
+        emit foodWasRemoved(_name);
+    }
+
+    function getFoods() public view returns(string[] memory) {
+        return foodsNames;
+    }
+    
+    function buyFood(string memory _name) public {
+        uint foodPrice = foods[_name].price;
+        require(foods[_name].status == true, "Food unavailable.");
+        require(foodPrice <= myTokens(), "Insufficient tokens.");
+        token.transferToPark(msg.sender, address(this), foodPrice);
+        foodsHistory[msg.sender].push(_name);
+        foodWasBought(_name, foodPrice, msg.sender);
+    }
+
+    function customerFoods() public view returns(string[] memory) {
+        return foodsHistory[msg.sender];
+    }
+
+    // Tokens
 
     function swapTokens(uint _tokenQty) public payable {
         require(_tokenQty > 0, "The number of tokens must be greater than 0.");
