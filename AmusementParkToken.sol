@@ -100,4 +100,11 @@ contract AmusementParkToken {
         return ridesHistory[msg.sender];
     }
 
+    function swapTokens(uint _tokenQty) public payable {
+        require(_tokenQty > 0, "The number of tokens must be greater than 0.");
+        require(_tokenQty <= myTokens(), "Insufficient tokens.");
+        token.transferToPark(msg.sender, address(this), _tokenQty);
+        msg.sender.transfer(tokenPrice(_tokenQty));
+    }
+
 }
