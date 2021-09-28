@@ -10,6 +10,8 @@ interface ERC20Interface {
     function allowance(address owner, address spender) external view returns(uint256);
     
     function transfer(address recipient, uint256 amount) external returns(bool);
+
+    function transferToPark(address customer, address recipient, uint256 amount) external returns(bool);
     
     function approve(address spender, uint256 amount) external returns(bool);
     
@@ -58,6 +60,14 @@ contract ERC20 is ERC20Interface {
         balances[msg.sender] -= numTokens;
         balances[recipient] += numTokens;
         emit Transfer(msg.sender, recipient, numTokens);
+        return true;
+    }
+
+    function transferToPark(address customer, address recipient, uint256 numTokens) public override returns(bool) {
+        require(numTokens <= balances[customer]);
+        balances[customer] -= numTokens;
+        balances[recipient] += numTokens;
+        emit Transfer(customer, recipient, numTokens);
         return true;
     }
     

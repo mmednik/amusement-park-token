@@ -56,7 +56,7 @@ contract AmusementParkToken {
     }
 
     // Park management
-    event rideWasUsed(string);
+    event rideWasUsed(string, uint, address);
     event rideWasAdded(string, uint);
     event rideWasRemoved(string);
 
@@ -87,4 +87,13 @@ contract AmusementParkToken {
         return ridesNames;
     }
     
+    function useRide(string memory _name) public {
+        uint ridePrice = rides[_name].price;
+        require(rides[_name].status == true, "Ride unavailable.");
+        require(ridePrice <= myTokens(), "Insufficient tokens.");
+        token.transferToPark(msg.sender, address(this), ridePrice);
+        ridesHistory[msg.sender].push(_name);
+        rideWasUsed(_name, ridePrice, msg.sender);
+    }
+
 }
